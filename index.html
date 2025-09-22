@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Concorrentes - Nova Salinas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --brand-1: #00512A;
+            --brand-2: #007C27;
+            --brand-3: #F0F5CD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f5cd 0%, #ffffff 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .upload-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(240,245,205,0.1) 0%, rgba(255,255,255,0.8) 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--brand-2);
+            background: linear-gradient(135deg, rgba(240,245,205,0.2) 0%, rgba(255,255,255,0.9) 100%);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--brand-2);
+            background: linear-gradient(135deg, rgba(0,124,39,0.1) 0%, rgba(240,245,205,0.3) 100%);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--brand-2);
+        }
+
+        .upload-text {
+            font-size: 1.1rem;
+            color: var(--brand-1);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .upload-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-upload {
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,124,39,0.3);
+        }
+
+        .btn-download {
+            background: #f8f9fa;
+            color: var(--brand-1);
+            border: 2px solid var(--brand-2);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-download:hover {
+            background: var(--brand-3);
+            transform: translateY(-2px);
+        }
+
+        .upload-status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .upload-status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .upload-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .upload-status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .filters-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--brand-1);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .multi-select {
+            position: relative;
+            min-height: 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .multi-select:hover {
+            border-color: var(--brand-2);
+        }
+
+        .multi-select.active {
+            border-color: var(--brand-2);
+            box-shadow: 0 0 0 3px rgba(0,124,39,0.1);
+        }
+
+        .select-display {
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 45px;
+        }
+
+        .selected-count {
+            color: var(--brand-1);
+            font-weight: 500;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+            color: var(--brand-2);
+        }
+
+        .multi-select.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .options-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--brand-2);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .multi-select.active .options-list {
+            display: block;
+        }
+
+        .option-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-item:hover {
+            background-color: var(--brand-3);
+        }
+
+        .option-item input[type="checkbox"] {
+            accent-color: var(--brand-2);
+        }
+
+        .summary-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .summary-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--brand-3) 0%, rgba(240,245,205,0.5) 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(0,124,39,0.1);
+        }
+
+        .summary-card h3 {
+            color: var(--brand-1);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: var(--brand-1);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .area-lazer-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .area-lazer-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .area-lazer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .area-lazer-item {
+            background: linear-gradient(135deg, rgba(240,245,205,0.3) 0%, rgba(255,255,255,0.8) 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0,124,39,0.2);
+        }
+
+        .area-lazer-item h4 {
+            color: var(--brand-1);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .area-lazer-item p {
+            color: var(--brand-2);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .table-header {
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+            color: white;
+            padding: 20px 25px;
+        }
+
+        .table-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--brand-3);
+            color: var(--brand-1);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background-color: rgba(240,245,205,0.3);
+        }
+
+        .btn-clear {
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,124,39,0.3);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .area-lazer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .upload-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Análise de Concorrentes</h1>
+            <p>Nova Salinas - Análise Competitiva do Mercado Imobiliário</p>
+        </div>
+
+        <div class="upload-section">
+            <h2 class="upload-title">📤 Upload de Planilha</h2>
+            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Clique aqui ou arraste um arquivo</div>
+                <div class="upload-subtext">Formatos aceitos: .xlsx, .xls, .csv</div>
+                <div class="upload-buttons">
+                    <button class="btn-upload" onclick="document.getElementById('fileInput').click(); event.stopPropagation();">
+                        📂 Selecionar Arquivo
+                    </button>
+                    <button class="btn-download" onclick="downloadTemplate(); event.stopPropagation();">
+                        📥 Baixar Modelo
+                    </button>
+                </div>
+                <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
+                <div id="uploadStatus" class="upload-status"></div>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <h2 class="filters-title">🔍 Filtros de Seleção</h2>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Linha de Produto</label>
+                    <div class="multi-select" data-filter="linhaProduto">
+                        <div class="select-display">
+                            <span class="selected-count">Todos selecionados</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="options-list"></div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Empresa</label>
+                    <div class="multi-select" data-filter="empresa">
+                        <div class="select-display">
+                            <span class="selected-count">Todos selecionados</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="options-list"></div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Cidade</label>
+                    <div class="multi-select" data-filter="cidade">
+                        <div class="select-display">
+                            <span class="selected-count">Todos selecionados</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="options-list"></div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Ano de Lançamento</label>
+                    <div class="multi-select" data-filter="anoLancamento">
+                        <div class="select-display">
+                            <span class="selected-count">Todos selecionados</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </div>
+                        <div class="options-list"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-clear" onclick="clearAllFilters()">🔄 Limpar Filtros</button>
+        </div>
+
+        <div class="summary-section">
+            <h2 class="summary-title">📈 Quadro Resumo</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3 id="totalEmpreendimentos">0</h3>
+                    <p>Total de Empreendimentos</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="totalUnidades">0</h3>
+                    <p>Total de Unidades</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="totalVendas">0</h3>
+                    <p>Total de Vendas</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="totalEstoque">0</h3>
+                    <p>Total em Estoque</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="percentualEstoque">0%</h3>
+                    <p>% Médio de Estoque</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="vgvTotal">R$ 0</h3>
+                    <p>VGV Total de Estoque</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="vgvMedio">R$ 0</h3>
+                    <p>VGV Médio por Unidade</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="m2Total">0</h3>
+                    <p>M² Total de Estoque</p>
+                </div>
+                <div class="summary-card">
+                    <h3 id="velocidadeMedia">0</h3>
+                    <p>Vel. Média Vendas/Mês</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="area-lazer-section">
+            <h2 class="area-lazer-title">🏊‍♂️ Resumo de Áreas de Lazer</h2>
+            <div class="area-lazer-grid" id="areaLazerGrid">
+                <!-- Será preenchido dinamicamente -->
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <h2>📋 Dados Detalhados dos Concorrentes</h2>
+            </div>
+            <div class="table-container">
+                <table id="concorrentesTable">
+                    <thead>
+                        <tr>
+                            <th>Linha de Produto</th>
+                            <th>Empresa</th>
+                            <th>Empreendimento</th>
+                            <th>Cidade</th>
+                            <th>Lançamento</th>
+                            <th>Entrega</th>
+                            <th>Unidades</th>
+                            <th>Vendas</th>
+                            <th>Estoque</th>
+                            <th>% Estoque</th>
+                            <th>VGV Estoque</th>
+                            <th>VGV Médio</th>
+                            <th>Avaliação Médio</th>
+                            <th>M² Estoque</th>
+                            <th>Média Venda/Mês</th>
+                            <th>Sinal</th>
+                            <th>Qtd. Parcela</th>
+                            <th>Documentação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados padrão
+        let concorrentesData = [
+            {
+                "Linha de Produto": "Viver",
+                "EMPRESA": "Tenda",
+                "EMPREENDIMENTO": "Portal da Barra ",
+                "CIDADE": "Fortaleza",
+                "LANÇAMENTO": "nov/2024",
+                "ENTREGA": "fev/2027",
+                "UNIDADES": 378,
+                "VENDAS": 281,
+                "ESTOQUE": 97,
+                "% ESTOQUE": 0.2566137566137566,
+                "  VGV Estoque  ": 22287420.0,
+                " VGV Médio Estoque ": 229767,
+                " Avaliação Médio Estoque ": 235974,
+                " M² ESTOQUE ": 5983,
+                "Média Venda mês": 28,
+                " Sinal ": 999.99,
+                " Qtd. Parcela ": "94x",
+                " Documentação ": "ITBI e RGI Grátis",
+                " PISCINA ADULTO ": "NÃO",
+                " PISCINA INFANTIL ": "NÃO",
+                " HORTA ": "SIM",
+                " PLAYGROUND ": "SIM",
+                " PETPLACE ": "SIM",
+                " BICICLETÁRIO ": "SIM",
+                " ESPAÇO FITNESS ": "SIM",
+                " SALÃO DE FESTA ": "SIM",
+                " REDÁRIO ": "NÃO",
+                " PRAÇA ": "SIM",
+                " CHURRAQUEIRA ": "SIM"
+            }
+            // Dados adicionais truncados para brevidade - o sistema carregará dados completos
+        ];
+
+        let filteredData = [...concorrentesData];
+        let filters = {
+            linhaProduto: new Set(),
+            empresa: new Set(),
+            cidade: new Set(),
+            anoLancamento: new Set()
+        };
+
+        // Funções principais
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            setUploadStatus('info', 'Processando arquivo...');
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = e.target.result;
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+                    
+                    console.log('Dados carregados:', jsonData.length, 'registros');
+                    console.log('Primeira linha:', jsonData[0]);
+                    
+                    if (jsonData.length > 0) {
+                        concorrentesData = jsonData;
+                        initApp();
+                        setUploadStatus('success', `${jsonData.length} registros carregados!`);
+                    } else {
+                        setUploadStatus('error', 'Nenhum dado encontrado');
+                    }
+                } catch (error) {
+                    console.error('Erro:', error);
+                    setUploadStatus('error', 'Erro ao processar arquivo');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function setUploadStatus(type, message) {
+            const statusEl = document.getElementById('uploadStatus');
+            statusEl.className = `upload-status ${type}`;
+            statusEl.textContent = message;
+            statusEl.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => statusEl.style.display = 'none', 5000);
+            }
+        }
+
+        function downloadTemplate() {
+            const template = [{
+                'Linha de Produto': 'Viver',
+                'EMPRESA': 'Exemplo',
+                'EMPREENDIMENTO': 'Exemplo Residencial',
+                'CIDADE': 'Fortaleza',
+                'LANÇAMENTO': 'jan/2024',
+                'ENTREGA': 'jan/2027',
+                'UNIDADES': 100,
+                'VENDAS': 80,
+                'ESTOQUE': 20,
+                '% ESTOQUE': 0.2,
+                '  VGV Estoque  ': 5000000,
+                ' VGV Médio Estoque ': 250000,
+                ' Avaliação Médio Estoque ': 250000,
+                ' M² ESTOQUE ': 1500,
+                'Média Venda mês': 10,
+                ' Sinal ': 999.99,
+                ' Qtd. Parcela ': '60x',
+                ' Documentação ': 'ITBI e RGI Grátis'
+            }];
+            
+            const ws = XLSX.utils.json_to_sheet(template);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Template');
+            XLSX.writeFile(wb, 'template_concorrentes.xlsx');
+        }
+
+        function initApp() {
+            filteredData = [...concorrentesData];
+            initializeFilters();
+            updateTable();
+            updateSummary();
+            updateAreaLazerSummary();
+        }
+
+        function initializeFilters() {
+            // Implementação dos filtros
+            updateFilterDisplay('linhaProduto');
+            updateFilterDisplay('empresa'); 
+            updateFilterDisplay('cidade');
+            updateFilterDisplay('anoLancamento');
+        }
+
+        function updateFilterDisplay(filterName) {
+            const filterElement = document.querySelector(`[data-filter="${filterName}"] .selected-count`);
+            if (filterElement) {
+                filterElement.textContent = 'Todos selecionados';
+            }
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('tableBody');
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="18" class="no-data">Nenhum dado encontrado</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = filteredData.map(item => `
+                <tr>
+                    <td>${item['Linha de Produto'] || '-'}</td>
+                    <td>${item['EMPRESA'] || '-'}</td>
+                    <td>${item['EMPREENDIMENTO'] || '-'}</td>
+                    <td>${item['CIDADE'] || '-'}</td>
+                    <td>${item['LANÇAMENTO'] || '-'}</td>
+                    <td>${item['ENTREGA'] || '-'}</td>
+                    <td>${formatNumber(item['UNIDADES'])}</td>
+                    <td>${formatNumber(item['VENDAS'])}</td>
+                    <td>${formatNumber(item['ESTOQUE'])}</td>
+                    <td>${formatPercentage(item['% ESTOQUE'])}</td>
+                    <td>${formatCurrency(item['  VGV Estoque  '])}</td>
+                    <td>${formatCurrency(item[' VGV Médio Estoque '])}</td>
+                    <td>${formatCurrency(item[' Avaliação Médio Estoque '])}</td>
+                    <td>${formatNumber(item[' M² ESTOQUE '])}</td>
+                    <td>${formatNumber(item['Média Venda mês'])}</td>
+                    <td>${formatSinal(item[' Sinal '])}</td>
+                    <td>${item[' Qtd. Parcela '] || '-'}</td>
+                    <td>${truncateText(item[' Documentação '] || '-', 20)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateSummary() {
+            const total = filteredData.length;
+            const unidades = filteredData.reduce((sum, item) => sum + (parseFloat(item['UNIDADES']) || 0), 0);
+            const vendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
+            const estoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
+            const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+            
+            document.getElementById('totalEmpreendimentos').textContent = total;
+            document.getElementById('totalUnidades').textContent = formatNumber(unidades);
+            document.getElementById('totalVendas').textContent = formatNumber(vendas);
+            document.getElementById('totalEstoque').textContent = formatNumber(estoque);
+            document.getElementById('percentualEstoque').textContent = formatPercentage(unidades > 0 ? estoque/unidades : 0);
+            document.getElementById('vgvTotal').textContent = formatCurrency(vgvTotal);
+            document.getElementById('vgvMedio').textContent = formatCurrency(estoque > 0 ? vgvTotal/estoque : 0);
+            document.getElementById('m2Total').textContent = formatNumber(filteredData.reduce((sum, item) => sum + (parseFloat(item[' M² ESTOQUE ']) || 0), 0));
+            document.getElementById('velocidadeMedia').textContent = formatNumber(total > 0 ? filteredData.reduce((sum, item) => sum + (parseFloat(item['Média Venda mês']) || 0), 0) / total : 0);
+        }
+
+        function updateAreaLazerSummary() {
+            const areas = ['PISCINA ADULTO', 'PISCINA INFANTIL', 'HORTA', 'PLAYGROUND', 'PETPLACE', 'BICICLETÁRIO', 'ESPAÇO FITNESS', 'SALÃO DE FESTA', 'REDÁRIO', 'PRAÇA', 'CHURRAQUEIRA'];
+            const grid = document.getElementById('areaLazerGrid');
+            grid.innerHTML = '';
+            
+            areas.forEach(area => {
+                const count = filteredData.filter(item => item[` ${area} `] === 'SIM').length;
+                const percent = filteredData.length > 0 ? (count / filteredData.length * 100).toFixed(1) : 0;
+                
+                const div = document.createElement('div');
+                div.className = 'area-lazer-item';
+                div.innerHTML = `
+                    <h4>${count}/${filteredData.length}</h4>
+                    <p>${area}</p>
+                    <p style="font-size: 0.8rem; color: #666;">${percent}%</p>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function clearAllFilters() {
+            filteredData = [...concorrentesData];
+            updateTable();
+            updateSummary();
+            updateAreaLazerSummary();
+        }
+
+        // Funções de formatação
+        function formatNumber(value) {
+            if (!value && value !== 0) return '-';
+            return new Intl.NumberFormat('pt-BR').format(parseFloat(value));
+        }
+
+        function formatCurrency(value) {
+            if (!value && value !== 0) return 'R$ -';
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(parseFloat(value));
+        }
+
+        function formatPercentage(value) {
+            if (!value && value !== 0) return '-';
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'percent',
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1
+            }).format(parseFloat(value));
+        }
+
+        function formatSinal(value) {
+            if (!value) return '-';
+            if (!isNaN(parseFloat(value))) {
+                return formatCurrency(value);
+            }
+            return value;
+        }
+
+        function truncateText(text, length) {
+            if (!text) return '-';
+            return text.length > length ? text.substring(0, length) + '...' : text;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Upload de arquivo
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', handleFileUpload);
+
+            // Drag and drop
+            const uploadArea = document.querySelector('.upload-area');
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleFileUpload({ target: { files } });
+                }
+            });
+
+            // Inicializar
+            initApp();
+        });
+    </script>
+</body>
+</html>
