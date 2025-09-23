@@ -49,6 +49,34 @@
         .header p {
             font-size: 1.1rem;
             opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-export:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
         }
 
         .upload-section {
@@ -79,7 +107,6 @@
 
         .upload-area:hover {
             border-color: var(--brand-2);
-            background: linear-gradient(135deg, rgba(240,245,205,0.2) 0%, rgba(255,255,255,0.9) 100%);
         }
 
         .upload-area.dragover {
@@ -284,49 +311,6 @@
             accent-color: var(--brand-2);
         }
 
-        .summary-section {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-        }
-
-        .summary-title {
-            font-size: 1.4rem;
-            color: var(--brand-1);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .summary-card {
-            background: linear-gradient(135deg, var(--brand-3) 0%, rgba(240,245,205,0.5) 100%);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid rgba(0,124,39,0.1);
-        }
-
-        .summary-card h3 {
-            color: var(--brand-1);
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .summary-card p {
-            color: var(--brand-1);
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
         .area-lazer-section {
             background: white;
             padding: 25px;
@@ -370,6 +354,231 @@
             font-size: 0.9rem;
         }
 
+        .pricing-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .pricing-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .pricing-form {
+            background: linear-gradient(135deg, rgba(240,245,205,0.1) 0%, rgba(255,255,255,0.8) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,124,39,0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--brand-1);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--brand-2);
+            box-shadow: 0 0 0 3px rgba(0,124,39,0.1);
+        }
+
+        .btn-calculate {
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,124,39,0.3);
+        }
+
+        .pricing-results {
+            margin-top: 20px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pricing-card {
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .pricing-card.conservative {
+            border-color: #17a2b8;
+            background: linear-gradient(135deg, rgba(23,162,184,0.1) 0%, rgba(255,255,255,0.9) 100%);
+        }
+
+        .pricing-card.conservative::before {
+            background: #17a2b8;
+        }
+
+        .pricing-card.competitive {
+            border-color: var(--brand-2);
+            background: linear-gradient(135deg, var(--brand-3) 0%, rgba(255,255,255,0.9) 100%);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.competitive::before {
+            background: var(--brand-2);
+        }
+
+        .pricing-card.premium {
+            border-color: #fd7e14;
+            background: linear-gradient(135deg, rgba(253,126,20,0.1) 0%, rgba(255,255,255,0.9) 100%);
+        }
+
+        .pricing-card.premium::before {
+            background: #fd7e14;
+        }
+
+        .pricing-card h3 {
+            color: var(--brand-1);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .price-large {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brand-1);
+            margin-bottom: 15px;
+        }
+
+        .price-details {
+            text-align: left;
+        }
+
+        .price-details p {
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .price-details strong {
+            color: var(--brand-1);
+        }
+
+        .price-details span {
+            color: var(--brand-2);
+            font-weight: 600;
+        }
+
+        .market-analysis {
+            background: linear-gradient(135deg, rgba(240,245,205,0.2) 0%, rgba(255,255,255,0.9) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,124,39,0.1);
+        }
+
+        .market-analysis h4 {
+            color: var(--brand-1);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+            border: 1px solid rgba(0,124,39,0.1);
+        }
+
+        .analysis-item strong {
+            color: var(--brand-1);
+            font-size: 0.9rem;
+        }
+
+        .analysis-item span {
+            color: var(--brand-2);
+            font-weight: 600;
+        }
+
+        .recommendations {
+            margin-top: 20px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+            border-left: 4px solid var(--brand-2);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
         .table-section {
             background: white;
             border-radius: 15px;
@@ -387,6 +596,49 @@
         .table-header h2 {
             font-size: 1.4rem;
             font-weight: 600;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .summary-title {
+            font-size: 1.4rem;
+            color: var(--brand-1);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, var(--brand-3) 0%, rgba(240,245,205,0.5) 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid rgba(0,124,39,0.1);
+        }
+
+        .summary-card h3 {
+            color: var(--brand-1);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: var(--brand-1);
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .table-container {
@@ -480,7 +732,11 @@
     <div class="container">
         <div class="header">
             <h1>📊 Análise de Concorrentes</h1>
-            <p>Nova Salinas - Análise Competitiva do Mercado Imobiliário</p>
+            <p>Análise Competitiva do Mercado Imobiliário</p>
+            <div class="export-buttons">
+                <button class="btn-export" onclick="exportToPDF()">📄 Exportar PDF</button>
+                <button class="btn-export" onclick="exportToPowerPoint()">📊 Exportar PowerPoint</button>
+            </div>
         </div>
 
         <div class="upload-section">
@@ -552,48 +808,6 @@
             <button class="btn-clear" onclick="clearAllFilters()">🔄 Limpar Filtros</button>
         </div>
 
-        <div class="summary-section">
-            <h2 class="summary-title">📈 Quadro Resumo</h2>
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <h3 id="totalEmpreendimentos">0</h3>
-                    <p>Total de Empreendimentos</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="totalUnidades">0</h3>
-                    <p>Total de Unidades</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="totalVendas">0</h3>
-                    <p>Total de Vendas</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="totalEstoque">0</h3>
-                    <p>Total em Estoque</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="percentualEstoque">0%</h3>
-                    <p>% Médio de Estoque</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="vgvTotal">R$ 0</h3>
-                    <p>VGV Total de Estoque</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="vgvMedio">R$ 0</h3>
-                    <p>VGV Médio por Unidade</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="m2Total">0</h3>
-                    <p>M² Total de Estoque</p>
-                </div>
-                <div class="summary-card">
-                    <h3 id="velocidadeMedia">0</h3>
-                    <p>Vel. Média Vendas/Mês</p>
-                </div>
-            </div>
-        </div>
-
         <div class="area-lazer-section">
             <h2 class="area-lazer-title">🏊‍♂️ Resumo de Áreas de Lazer</h2>
             <div class="area-lazer-grid" id="areaLazerGrid">
@@ -601,10 +815,133 @@
             </div>
         </div>
 
+        <div class="pricing-section">
+            <h2 class="pricing-title">💰 Sugestão de Preços - Novo Empreendimento</h2>
+            <div class="pricing-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Linha de Produto:</label>
+                        <select id="pricingLinha">
+                            <option value="">Selecione...</option>
+                            <option value="Viver">Viver</option>
+                            <option value="Vista">Vista</option>
+                            <option value="INC.">INC.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-calculate" onclick="calculatePricingSuggestion()">📊 Calcular Sugestão</button>
+                    </div>
+                </div>
+            </div>
+            <div class="pricing-results" id="pricingResults" style="display: none;">
+                <div class="pricing-grid">
+                    <div class="pricing-card conservative">
+                        <h3>Estratégia Conservadora</h3>
+                        <div class="price-large" id="priceConservative">R$ 0</div>
+                        <div class="price-details">
+                            <p>Posicionamento: <strong>10% abaixo da média</strong></p>
+                            <p>Valor por unidade completa</p>
+                            <p>Perfil: Vendas rápidas, menor margem</p>
+                        </div>
+                    </div>
+                    <div class="pricing-card competitive">
+                        <h3>Estratégia Competitiva</h3>
+                        <div class="price-large" id="priceCompetitive">R$ 0</div>
+                        <div class="price-details">
+                            <p>Posicionamento: <strong>Preço médio do mercado</strong></p>
+                            <p>Valor por unidade completa</p>
+                            <p>Perfil: Equilíbrio entre margem e velocidade</p>
+                        </div>
+                    </div>
+                    <div class="pricing-card premium">
+                        <h3>Estratégia Premium</h3>
+                        <div class="price-large" id="pricePremium">R$ 0</div>
+                        <div class="price-details">
+                            <p>Posicionamento: <strong>15% acima da média</strong></p>
+                            <p>Valor por unidade completa</p>
+                            <p>Perfil: Maior margem, vendas mais lentas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="market-analysis">
+                    <h4>Análise de Mercado</h4>
+                    <div class="analysis-grid">
+                        <div class="analysis-item">
+                            <strong>Preço Médio por Unidade:</strong>
+                            <span id="avgPricePerM2">R$ 0</span>
+                        </div>
+                        <div class="analysis-item">
+                            <strong>Concorrentes Analisados:</strong>
+                            <span id="competitorCount">0</span>
+                        </div>
+                        <div class="analysis-item">
+                            <strong>Velocidade Média de Vendas:</strong>
+                            <span id="avgSalesSpeed">0 un/mês</span>
+                        </div>
+                        <div class="analysis-item">
+                            <strong>Estoque Médio do Segmento:</strong>
+                            <span id="avgStock">0%</span>
+                        </div>
+                    </div>
+                    <div class="recommendations">
+                        <h4>Recomendações</h4>
+                        <ul id="recommendationsList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="table-section">
             <div class="table-header">
                 <h2>📋 Dados Detalhados dos Concorrentes</h2>
             </div>
+            
+            <div class="summary-section" style="margin: 0; border-radius: 0;">
+                <h2 class="summary-title">📈 Quadro Resumo</h2>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3 id="totalEmpreendimentos">0</h3>
+                        <p>Total de Empreendimentos</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="totalUnidades">0</h3>
+                        <p>Total de Unidades</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="totalVendas">0</h3>
+                        <p>Total de Vendas</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="totalEstoque">0</h3>
+                        <p>Total em Estoque</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="percentualEstoque">0%</h3>
+                        <p>% Médio de Estoque</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="vgvTotal">R$ 0</h3>
+                        <p>VGV Total de Estoque</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="vgvMedio">R$ 0</h3>
+                        <p>VGV Médio por Unidade</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="m2Total">0</h3>
+                        <p>M² Total de Estoque</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="velocidadeMedia">0</h3>
+                        <p>Vel. Média Vendas/Mês</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3 id="areasLazerMedia">0</h3>
+                        <p>Áreas de Lazer Médias</p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="table-container">
                 <table id="concorrentesTable">
                     <thead>
@@ -670,7 +1007,6 @@
                 " PRAÇA ": "SIM",
                 " CHURRAQUEIRA ": "SIM"
             }
-            // Dados adicionais truncados para brevidade - o sistema carregará dados completos
         ];
 
         let filteredData = [...concorrentesData];
@@ -681,7 +1017,6 @@
             anoLancamento: new Set()
         };
 
-        // Funções principais
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -753,6 +1088,121 @@
             XLSX.writeFile(wb, 'template_concorrentes.xlsx');
         }
 
+        function calculatePricingSuggestion() {
+            const linha = document.getElementById('pricingLinha').value;
+
+            if (!linha) {
+                alert('Por favor, selecione a linha de produto.');
+                return;
+            }
+
+            const concorrentesSimilares = concorrentesData.filter(item => 
+                item['Linha de Produto'] === linha
+            );
+
+            if (concorrentesSimilares.length === 0) {
+                alert('Não há dados suficientes para essa linha de produto.');
+                return;
+            }
+
+            let totalPrecoUnidadeVGV = 0;
+            let totalPrecoUnidadeAvaliacao = 0;
+            let totalVelocidade = 0;
+            let totalEstoque = 0;
+            let validConcorrentesVGV = 0;
+            let validConcorrentesAvaliacao = 0;
+
+            concorrentesSimilares.forEach(item => {
+                const vgv = parseFloat(item['  VGV Estoque  ']) || 0;
+                const estoque = parseFloat(item['ESTOQUE']) || 0;
+                const avaliacaoMedia = parseFloat(item[' Avaliação Médio Estoque ']) || 0;
+                const velocidade = parseFloat(item['Média Venda mês']) || 0;
+                const percentEstoque = parseFloat(item['% ESTOQUE']) || 0;
+
+                if (vgv > 0 && estoque > 0) {
+                    const precoUnidadeVGV = vgv / estoque;
+                    totalPrecoUnidadeVGV += precoUnidadeVGV;
+                    totalVelocidade += velocidade;
+                    totalEstoque += percentEstoque;
+                    validConcorrentesVGV++;
+                }
+
+                if (avaliacaoMedia > 0) {
+                    totalPrecoUnidadeAvaliacao += avaliacaoMedia;
+                    validConcorrentesAvaliacao++;
+                }
+            });
+
+            if (validConcorrentesVGV === 0 && validConcorrentesAvaliacao === 0) {
+                alert('Não há dados válidos para cálculo.');
+                return;
+            }
+
+            let precoMedioUnidade;
+            let metodologia;
+
+            if (validConcorrentesAvaliacao > 0) {
+                precoMedioUnidade = totalPrecoUnidadeAvaliacao / validConcorrentesAvaliacao;
+                metodologia = "Baseado na avaliação média de estoque";
+            } else {
+                precoMedioUnidade = totalPrecoUnidadeVGV / validConcorrentesVGV;
+                metodologia = "Baseado no VGV dividido pelo estoque";
+            }
+
+            const velocidadeMedia = validConcorrentesVGV > 0 ? totalVelocidade / validConcorrentesVGV : 0;
+            const estoquePercMedio = validConcorrentesVGV > 0 ? totalEstoque / validConcorrentesVGV : 0;
+            
+            if (precoMedioUnidade < 100000 || precoMedioUnidade > 2000000) {
+                console.warn('Preço médio fora da faixa esperada:', precoMedioUnidade);
+                console.warn('Dados dos concorrentes:', concorrentesSimilares);
+            }
+            
+            const precoConservativoUnidade = precoMedioUnidade * 0.9;
+            const precoCompetitivoUnidade = precoMedioUnidade;
+            const precoPremiumUnidade = precoMedioUnidade * 1.15;
+
+            document.getElementById('priceConservative').textContent = formatCurrency(precoConservativoUnidade);
+            document.getElementById('priceCompetitive').textContent = formatCurrency(precoCompetitivoUnidade);
+            document.getElementById('pricePremium').textContent = formatCurrency(precoPremiumUnidade);
+
+            document.getElementById('avgPricePerM2').textContent = formatCurrency(precoMedioUnidade);
+            document.getElementById('competitorCount').textContent = Math.max(validConcorrentesVGV, validConcorrentesAvaliacao);
+            document.getElementById('avgSalesSpeed').textContent = velocidadeMedia.toFixed(1) + ' un/mês';
+            document.getElementById('avgStock').textContent = formatPercentage(estoquePercMedio / 100);
+
+            const recommendations = [];
+            
+            recommendations.push(`Metodologia: ${metodologia}`);
+            
+            if (estoquePercMedio > 40) {
+                recommendations.push('Alto estoque no mercado (>' + (estoquePercMedio * 100).toFixed(0) + '%) - considere preços competitivos para acelerar vendas');
+            } else if (estoquePercMedio < 20) {
+                recommendations.push('Baixo estoque no mercado (<' + (estoquePercMedio * 100).toFixed(0) + '%) - oportunidade para preços premium');
+            }
+            
+            if (velocidadeMedia < 10) {
+                recommendations.push('Velocidade de vendas baixa (' + velocidadeMedia.toFixed(1) + ' un/mês) - estratégia conservadora recomendada');
+            } else if (velocidadeMedia > 20) {
+                recommendations.push('Velocidade de vendas alta (' + velocidadeMedia.toFixed(1) + ' un/mês) - mercado aquecido permite pricing premium');
+            }
+
+            let recomendacaoPrincipal;
+            if (estoquePercMedio > 35 && velocidadeMedia < 15) {
+                recomendacaoPrincipal = 'Conservadora - mercado com alto estoque e vendas lentas';
+            } else if (estoquePercMedio < 25 && velocidadeMedia > 15) {
+                recomendacaoPrincipal = 'Premium - mercado com baixo estoque e vendas aquecidas';
+            } else {
+                recomendacaoPrincipal = 'Competitiva - mercado equilibrado';
+            }
+            
+            recommendations.push('Estratégia recomendada: ' + recomendacaoPrincipal);
+
+            const recList = document.getElementById('recommendationsList');
+            recList.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+
+            document.getElementById('pricingResults').style.display = 'block';
+        }
+
         function initApp() {
             filteredData = [...concorrentesData];
             initializeFilters();
@@ -762,7 +1212,6 @@
         }
 
         function initializeFilters() {
-            // Implementação dos filtros
             updateFilterDisplay('linhaProduto');
             updateFilterDisplay('empresa'); 
             updateFilterDisplay('cidade');
@@ -813,6 +1262,25 @@
             const vendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
             const estoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
             const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+            const m2Total = filteredData.reduce((sum, item) => sum + (parseFloat(item[' M² ESTOQUE ']) || 0), 0);
+            const velocidadeTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['Média Venda mês']) || 0), 0);
+            
+            const areasLazer = [' PISCINA ADULTO ', ' PISCINA INFANTIL ', ' HORTA ', ' PLAYGROUND ', 
+                              ' PETPLACE ', ' BICICLETÁRIO ', ' ESPAÇO FITNESS ', ' SALÃO DE FESTA ', 
+                              ' REDÁRIO ', ' PRAÇA ', ' CHURRAQUEIRA '];
+            
+            let totalAreasLazer = 0;
+            filteredData.forEach(item => {
+                let areasDoEmpreendimento = 0;
+                areasLazer.forEach(area => {
+                    if (item[area] === 'SIM') {
+                        areasDoEmpreendimento++;
+                    }
+                });
+                totalAreasLazer += areasDoEmpreendimento;
+            });
+            
+            const mediaAreasLazer = total > 0 ? (totalAreasLazer / total) : 0;
             
             document.getElementById('totalEmpreendimentos').textContent = total;
             document.getElementById('totalUnidades').textContent = formatNumber(unidades);
@@ -821,8 +1289,9 @@
             document.getElementById('percentualEstoque').textContent = formatPercentage(unidades > 0 ? estoque/unidades : 0);
             document.getElementById('vgvTotal').textContent = formatCurrency(vgvTotal);
             document.getElementById('vgvMedio').textContent = formatCurrency(estoque > 0 ? vgvTotal/estoque : 0);
-            document.getElementById('m2Total').textContent = formatNumber(filteredData.reduce((sum, item) => sum + (parseFloat(item[' M² ESTOQUE ']) || 0), 0));
-            document.getElementById('velocidadeMedia').textContent = formatNumber(total > 0 ? filteredData.reduce((sum, item) => sum + (parseFloat(item['Média Venda mês']) || 0), 0) / total : 0);
+            document.getElementById('m2Total').textContent = formatNumber(m2Total);
+            document.getElementById('velocidadeMedia').textContent = formatNumber(total > 0 ? velocidadeTotal / total : 0);
+            document.getElementById('areasLazerMedia').textContent = mediaAreasLazer.toFixed(1);
         }
 
         function updateAreaLazerSummary() {
@@ -852,7 +1321,6 @@
             updateAreaLazerSummary();
         }
 
-        // Funções de formatação
         function formatNumber(value) {
             if (!value && value !== 0) return '-';
             return new Intl.NumberFormat('pt-BR').format(parseFloat(value));
@@ -890,13 +1358,431 @@
             return text.length > length ? text.substring(0, length) + '...' : text;
         }
 
-        // Event listeners
+        function exportToPDF() {
+            try {
+                const currentDate = new Date().toLocaleDateString('pt-BR');
+                const totalEmpreendimentos = filteredData.length;
+                const totalUnidades = filteredData.reduce((sum, item) => sum + (parseFloat(item['UNIDADES']) || 0), 0);
+                const totalVendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
+                const totalEstoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
+                const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+
+                const reportContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Relatório - Análise de Concorrentes</title>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 30px; line-height: 1.6; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #00512A; padding-bottom: 20px; }
+                        .header h1 { color: #00512A; margin: 0; font-size: 2em; }
+                        .header p { color: #666; margin: 5px 0; }
+                        .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+                        .summary-card { padding: 20px; background: #F0F5CD; border-radius: 8px; text-align: center; }
+                        .summary-card h3 { color: #00512A; font-size: 1.5rem; margin: 0 0 5px 0; }
+                        .summary-card p { color: #007C27; margin: 0; font-weight: bold; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.85rem; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #F0F5CD; color: #00512A; font-weight: bold; }
+                        tr:nth-child(even) { background-color: #f9f9f9; }
+                        .footer { margin-top: 40px; text-align: center; color: #666; font-size: 0.9rem; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Análise de Concorrentes - Nova Salinas</h1>
+                        <p>Relatório Competitivo do Mercado Imobiliário</p>
+                        <p>Data: ${currentDate}</p>
+                    </div>
+
+                    <div class="summary">
+                        <div class="summary-card">
+                            <h3>${totalEmpreendimentos}</h3>
+                            <p>Empreendimentos</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>${new Intl.NumberFormat('pt-BR').format(totalUnidades)}</h3>
+                            <p>Total de Unidades</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>${new Intl.NumberFormat('pt-BR').format(totalVendas)}</h3>
+                            <p>Total de Vendas</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>${new Intl.NumberFormat('pt-BR').format(totalEstoque)}</h3>
+                            <p>Total em Estoque</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 0}).format(vgvTotal)}</h3>
+                            <p>VGV Total</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3>${new Intl.NumberFormat('pt-BR', {style: 'percent', minimumFractionDigits: 1}).format(totalUnidades > 0 ? totalEstoque/totalUnidades : 0)}</h3>
+                            <p>% Médio Estoque</p>
+                        </div>
+                    </div>
+
+                    <h2 style="color: #00512A;">Dados Detalhados dos Concorrentes</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Linha</th>
+                                <th>Empresa</th>
+                                <th>Empreendimento</th>
+                                <th>Cidade</th>
+                                <th>Lançamento</th>
+                                <th>Unidades</th>
+                                <th>Vendas</th>
+                                <th>Estoque</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredData.map(item => `
+                                <tr>
+                                    <td>${item['Linha de Produto'] || '-'}</td>
+                                    <td>${item['EMPRESA'] || '-'}</td>
+                                    <td>${item['EMPREENDIMENTO'] || '-'}</td>
+                                    <td>${item['CIDADE'] || '-'}</td>
+                                    <td>${item['LANÇAMENTO'] || '-'}</td>
+                                    <td>${new Intl.NumberFormat('pt-BR').format(item['UNIDADES'] || 0)}</td>
+                                    <td>${new Intl.NumberFormat('pt-BR').format(item['VENDAS'] || 0)}</td>
+                                    <td>${new Intl.NumberFormat('pt-BR').format(item['ESTOQUE'] || 0)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="footer">
+                        <p>Relatório gerado automaticamente pelo Sistema de Análise de Concorrentes</p>
+                        <p>Nova Salinas - ${currentDate}</p>
+                    </div>
+                </body>
+                </html>
+                `;
+
+                const printWindow = window.open('', '_blank', 'width=800,height=600');
+                if (printWindow) {
+                    printWindow.document.write(reportContent);
+                    printWindow.document.close();
+                    
+                    printWindow.onload = function() {
+                        setTimeout(() => {
+                            printWindow.print();
+                        }, 1000);
+                    };
+                } else {
+                    alert('Pop-up bloqueado. Permita pop-ups para exportar o relatório.');
+                }
+            } catch (error) {
+                console.error('Erro na exportação PDF:', error);
+                alert('Erro ao gerar PDF. Verifique o console para mais detalhes.');
+            }
+        }
+
+        function exportToPowerPoint() {
+            try {
+                const currentDate = new Date().toLocaleDateString('pt-BR');
+                const totalEmpreendimentos = filteredData.length;
+                const totalUnidades = filteredData.reduce((sum, item) => sum + (parseFloat(item['UNIDADES']) || 0), 0);
+                const totalVendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
+                const totalEstoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
+                const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+
+                const pptContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Análise de Concorrentes - Apresentação</title>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .slide { page-break-after: always; margin-bottom: 50px; padding: 20px; min-height: 500px; }
+                        .slide h1 { color: #00512A; border-bottom: 3px solid #007C27; padding-bottom: 10px; font-size: 2em; }
+                        .slide h2 { color: #007C27; margin-top: 30px; }
+                        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0; }
+                        .summary-item { padding: 15px; background: #F0F5CD; border-radius: 8px; text-align: center; }
+                        .summary-item h3 { color: #00512A; font-size: 1.5em; margin: 0 0 5px 0; }
+                        .summary-item p { color: #007C27; margin: 0; font-weight: bold; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #F0F5CD; color: #00512A; }
+                    </style>
+                </head>
+                <body>
+                    <div class="slide">
+                        <h1>Análise de Concorrentes</h1>
+                        <h2>Nova Salinas - Mercado Imobiliário</h2>
+                        <p><strong>Data:</strong> ${currentDate}</p>
+                        <p><strong>Total de Empreendimentos Analisados:</strong> ${totalEmpreendimentos}</p>
+                    </div>
+
+                    <div class="slide">
+                        <h1>Resumo Executivo</h1>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR').format(totalUnidades)}</h3>
+                                <p>Total de Unidades</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR').format(totalVendas)}</h3>
+                                <p>Total de Vendas</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR').format(totalEstoque)}</h3>
+                                <p>Total em Estoque</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR', {style: 'percent', minimumFractionDigits: 1}).format(totalUnidades > 0 ? totalEstoque/totalUnidades : 0)}</h3>
+                                <p>% Médio de Estoque</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 0}).format(vgvTotal)}</h3>
+                                <p>VGV Total</p>
+                            </div>
+                            <div class="summary-item">
+                                <h3>${new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 0}).format(totalEstoque > 0 ? vgvTotal/totalEstoque : 0)}</h3>
+                                <p>VGV Médio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide">
+                        <h1>Dados dos Concorrentes</h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Empresa</th>
+                                    <th>Empreendimento</th>
+                                    <th>Unidades</th>
+                                    <th>Vendas</th>
+                                    <th>Estoque</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filteredData.slice(0, 10).map(item => `
+                                    <tr>
+                                        <td>${item['EMPRESA'] || '-'}</td>
+                                        <td>${item['EMPREENDIMENTO'] || '-'}</td>
+                                        <td>${new Intl.NumberFormat('pt-BR').format(item['UNIDADES'] || 0)}</td>
+                                        <td>${new Intl.NumberFormat('pt-BR').format(item['VENDAS'] || 0)}</td>
+                                        <td>${new Intl.NumberFormat('pt-BR').format(item['ESTOQUE'] || 0)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        ${filteredData.length > 10 ? '<p><em>Primeiros 10 registros exibidos</em></p>' : ''}
+                    </div>
+                </body>
+                </html>
+                `;
+
+                const printWindow = window.open('', '_blank', 'width=1000,height=700');
+                if (printWindow) {
+                    printWindow.document.write(pptContent);
+                    printWindow.document.close();
+                    
+                    printWindow.onload = function() {
+                        setTimeout(() => {
+                            printWindow.print();
+                        }, 1000);
+                    };
+                } else {
+                    alert('Pop-up bloqueado. Permita pop-ups para exportar a apresentação.');
+                }
+            } catch (error) {
+                console.error('Erro na exportação PowerPoint:', error);
+                alert('Erro ao gerar apresentação. Verifique o console para mais detalhes.');
+            }
+        }
+
+        function generateReportHTML() {
+            const currentDate = new Date().toLocaleDateString('pt-BR');
+            const totalEmpreendimentos = filteredData.length;
+            const totalUnidades = filteredData.reduce((sum, item) => sum + (parseFloat(item['UNIDADES']) || 0), 0);
+            const totalVendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
+            const totalEstoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
+            const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+
+            return `
+            <html>
+            <head>
+                <title>Relatório - Análise de Concorrentes</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 30px; line-height: 1.6; }
+                    .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #00512A; padding-bottom: 20px; }
+                    .header h1 { color: #00512A; margin: 0; font-size: 2em; }
+                    .header p { color: #666; margin: 5px 0; }
+                    .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+                    .summary-card { padding: 20px; background: #F0F5CD; border-radius: 8px; text-align: center; }
+                    .summary-card h3 { color: #00512A; font-size: 1.5rem; margin: 0 0 5px 0; }
+                    .summary-card p { color: #007C27; margin: 0; font-weight: bold; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.85rem; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background-color: #F0F5CD; color: #00512A; font-weight: bold; }
+                    tr:nth-child(even) { background-color: #f9f9f9; }
+                    .footer { margin-top: 40px; text-align: center; color: #666; font-size: 0.9rem; }
+                    @media print { body { margin: 20px; } .summary { grid-template-columns: repeat(2, 1fr); } }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>Análise de Concorrentes - Nova Salinas</h1>
+                    <p>Relatório Competitivo do Mercado Imobiliário</p>
+                    <p>Data: ${currentDate}</p>
+                </div>
+
+                <div class="summary">
+                    <div class="summary-card">
+                        <h3>${totalEmpreendimentos}</h3>
+                        <p>Empreendimentos</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>${formatNumber(totalUnidades)}</h3>
+                        <p>Total de Unidades</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>${formatNumber(totalVendas)}</h3>
+                        <p>Total de Vendas</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>${formatNumber(totalEstoque)}</h3>
+                        <p>Total em Estoque</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>${formatCurrency(vgvTotal)}</h3>
+                        <p>VGV Total</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>${formatPercentage(totalUnidades > 0 ? totalEstoque/totalUnidades : 0)}</h3>
+                        <p>% Médio Estoque</p>
+                    </div>
+                </div>
+
+                <h2 style="color: #00512A;">Dados Detalhados dos Concorrentes</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Linha</th>
+                            <th>Empresa</th>
+                            <th>Empreendimento</th>
+                            <th>Cidade</th>
+                            <th>Lançamento</th>
+                            <th>Unidades</th>
+                            <th>Vendas</th>
+                            <th>Estoque</th>
+                            <th>% Estoque</th>
+                            <th>VGV Estoque</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filteredData.map(item => `
+                            <tr>
+                                <td>${item['Linha de Produto'] || '-'}</td>
+                                <td>${item['EMPRESA'] || '-'}</td>
+                                <td>${item['EMPREENDIMENTO'] || '-'}</td>
+                                <td>${item['CIDADE'] || '-'}</td>
+                                <td>${item['LANÇAMENTO'] || '-'}</td>
+                                <td>${formatNumber(item['UNIDADES'])}</td>
+                                <td>${formatNumber(item['VENDAS'])}</td>
+                                <td>${formatNumber(item['ESTOQUE'])}</td>
+                                <td>${formatPercentage(item['% ESTOQUE'])}</td>
+                                <td>${formatCurrency(item['  VGV Estoque  '])}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div class="footer">
+                    <p>Relatório gerado automaticamente pelo Sistema de Análise de Concorrentes</p>
+                    <p>Nova Salinas - ${currentDate}</p>
+                </div>
+            </body>
+            </html>
+            `;
+        }
+
+        function generatePowerPointData() {
+            const currentDate = new Date().toLocaleDateString('pt-BR');
+            const totalEmpreendimentos = filteredData.length;
+            const totalUnidades = filteredData.reduce((sum, item) => sum + (parseFloat(item['UNIDADES']) || 0), 0);
+            const totalVendas = filteredData.reduce((sum, item) => sum + (parseFloat(item['VENDAS']) || 0), 0);
+            const totalEstoque = filteredData.reduce((sum, item) => sum + (parseFloat(item['ESTOQUE']) || 0), 0);
+            const vgvTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item['  VGV Estoque  ']) || 0), 0);
+
+            return `
+                <div class="slide">
+                    <h1>Análise de Concorrentes</h1>
+                    <h2>Nova Salinas - Mercado Imobiliário</h2>
+                    <p><strong>Data:</strong> ${currentDate}</p>
+                    <p><strong>Total de Empreendimentos Analisados:</strong> ${totalEmpreendimentos}</p>
+                </div>
+
+                <div class="slide">
+                    <h1>Resumo Executivo</h1>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <h3>${formatNumber(totalUnidades)}</h3>
+                            <p>Total de Unidades</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${formatNumber(totalVendas)}</h3>
+                            <p>Total de Vendas</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${formatNumber(totalEstoque)}</h3>
+                            <p>Total em Estoque</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${formatPercentage(totalUnidades > 0 ? totalEstoque/totalUnidades : 0)}</h3>
+                            <p>% Médio de Estoque</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${formatCurrency(vgvTotal)}</h3>
+                            <p>VGV Total de Estoque</p>
+                        </div>
+                        <div class="summary-item">
+                            <h3>${formatCurrency(totalEstoque > 0 ? vgvTotal/totalEstoque : 0)}</h3>
+                            <p>VGV Médio por Unidade</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <h1>Dados dos Concorrentes</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Empresa</th>
+                                <th>Empreendimento</th>
+                                <th>Unidades</th>
+                                <th>Vendas</th>
+                                <th>Estoque</th>
+                                <th>% Estoque</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredData.slice(0, 10).map(item => `
+                                <tr>
+                                    <td>${item['EMPRESA'] || '-'}</td>
+                                    <td>${item['EMPREENDIMENTO'] || '-'}</td>
+                                    <td>${formatNumber(item['UNIDADES'])}</td>
+                                    <td>${formatNumber(item['VENDAS'])}</td>
+                                    <td>${formatNumber(item['ESTOQUE'])}</td>
+                                    <td>${formatPercentage(item['% ESTOQUE'])}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    ${filteredData.length > 10 ? '<p><em>Primeiros 10 registros exibidos</em></p>' : ''}
+                </div>
+            `;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Upload de arquivo
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('change', handleFileUpload);
 
-            // Drag and drop
             const uploadArea = document.querySelector('.upload-area');
             uploadArea.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -915,7 +1801,6 @@
                 }
             });
 
-            // Inicializar
             initApp();
         });
     </script>
